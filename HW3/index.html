@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <style>
+    h1 {
+      color: purple;
+	  padding: 0;
+	  margin: 0;
+    }
+    h2 {
+      color: darkred;	  
+	  padding: 0;
+	  margin: 0;
+    }
+    h3 {
+      color: darkgreen;	  
+	  padding: 0;
+	  margin: 0;
+    }	
+	body {background-color: honeydew}
+    
+    .important {
+      color: Orange;
+      text-decoration: underline
+    }
+	
+  </style>
+  <title> Assignment 3 </title>
+  
+ 
+</head>
+<body>
+  <h1> CRP 558 (Assignment 3) </h1>
+  <h2> Saad Tarik </h2>
+  <br>
+  
+  <a href="#" onclick="changeMap('basemapLandcover')">Basemap</a> &nbsp; &nbsp;
+  <a href="#" onclick="changeMap('appleOrchards')">Apple Orchards</a> &nbsp; &nbsp;
+  <a href="#" onclick="changeMap('vineyards')">Vineyards</a> &nbsp; &nbsp;
+  <a href="#" onclick="changeMap('Interstate')">Interstates</a> &nbsp; &nbsp;
+  <a href="#" onclick="changeMap('museums')">Museums</a> &nbsp; &nbsp;
+  
+  
+  <img id = "mymap" src = "images/basemapLandcover.png" alt = "iowaBorder" width = "800" height = "600"> <br>
+ 
+</body>
+<script>
+function changeMap(x){
+	document.getElementById("baseMap").src="images/"+ x + ".png";
+}
+
+//changeMap("museums");
+
+</script>
+</html>
