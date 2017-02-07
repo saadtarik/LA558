@@ -1,0 +1,217 @@
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2017 by saadtarik (http://jsbin.com/yikayi/2/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+
+<head>
+  <title>Assignment 4</title>
+<style id="jsbin-css">
+body {
+	background-color: lightgrey;
+	font-family: serif;
+}
+
+a {
+	text-decoration: none;
+	color: red;
+}
+
+h1 {
+  margin:0;
+  color: white;
+}
+
+h2,h3 {
+	margin: 0;
+  color: #524727
+}
+
+#container {
+	background-color: white;
+	width: 800px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+#header {
+	background-color: #C8102E;
+	color: white;
+	text-align: center;
+	padding: 10px;
+}
+#content {
+	padding: 10px;
+}
+#colbox {
+	width: 100px;
+	height: 100px;
+	float:left;
+	border: thin solid #000000;
+	background-color: #DFFF00;
+}
+
+
+#nav.selected {
+	font-weight: bold;
+}
+
+#main {
+	width: 750px;
+	float: right;
+}
+
+#footer {
+	clear: both;
+	padding: 10px;
+	background-color: #9B945F;
+	color: white;
+	text-align: right;
+}
+</style>
+</head> 
+
+<body>
+
+<div id = "container">
+
+  <div id = "header">
+    <h1>Assignment 4 by Saad Tarik</h1>
+  </div>
+  <div id = "content">
+
+    <div id = "main">
+      <h2> Function and Input Fields </h2>
+      <p>Input 1: <input type = "text" id = "num1" name="num1"> </p>
+            <p>Input 2: <input type = "text" id = "num2" name="num2"> </p>
+      <button onclick = "mymath()"> Multiply </button>
+      <p id = "math"> </p>
+      
+      <h2> Button </h2>
+
+      <p id = "date"></p>
+      <p> How far is the moon from the earth?</p>
+      <button type = "button" onclick = "moondist()" > Show Answer </button>
+      <p id = "moon"></p>
+      
+      <h2> Array </h2>
+      <p id = "colorlist"></p>
+      <p id = "colorlist2"></p>
+      <p id = "colorlist3"></p>
+      
+      <h2> Object </h2>
+      <p id = "scientist"></p>
+      
+      <h2> Loop </h2>
+      <p> Directions: </p>
+      <p id = "colors"></p>
+      
+      <h2> if then or case </h2>
+      Get the HEX codes for the colors. Type Red, Blue, Orange, and Black in the box and click show.
+      <input id="myInput" type="text">
+      <button onclick="hexcode()">Show</button>
+      <p id = "hex"></p>
+      
+      <h2> Output of the Input after Manipulation</h2>
+      <br>
+      First Name: <input type = "text" id = "FN"> <br>
+      Last Name: <input type = "text" id = "LN" onchange = "changefun(this.value)"> <br>
+      
+      <button type = "button" onclick = "updatedisp()"> Update </button>
+      <div id = "update"></div>
+    </div>
+  
+  </div>
+  <div id = "footer">
+    Saad Tarik | CRP 558 | Assignment 4
+  </div>
+
+
+<script id="jsbin-javascript">
+function mymath() {
+        var y = document.getElementById("num1").value;
+        var z = document.getElementById("num2").value;
+        var x = y * z;
+        document.getElementById("math").innerHTML = x;
+}
+
+
+function dateFunction(){
+  document.getElementById("date").innerHTML = Date();
+}
+
+function moondist(){
+  var dist = "238,900";
+  document.getElementById("moon").innerHTML = "The moon is " + dist + " miles away";
+}
+
+  var colors = [
+  "Red", "Gold", "Silver", "Yellow", "Black"
+];
+
+document.getElementById("colorlist").innerHTML = "List of Colors: " + colors;
+
+document.getElementById("colorlist2").innerHTML = "The first color in the list is " + colors[0];
+
+document.getElementById("colorlist3").innerHTML = "The length of the list is " + colors.length;
+
+
+var people = {
+    firstName : "Albert",
+    lastName  : "Einstein",
+    nationality   : "German",
+    prizeyear : 1921
+};
+
+document.getElementById("scientist").innerHTML =
+people.firstName + " "+ people.lastName +" is a " + people.nationality + " scientist who won the Nobel Prize in " + people.prizeyear;
+
+var directions = ["North", "East", "South", "West"];
+var text = "";
+var i;
+for (i = 0; i < directions.length; i++) {
+    text += directions[i] + "<br>";
+}
+document.getElementById("colors").innerHTML = text;
+
+function hexcode() {
+    var text;
+    var cols = document.getElementById("myInput").value;
+
+    switch(cols) {
+        case "Red":
+            text = "#FF0000";
+        break;
+        case "Blue":
+        text = "#0000FF";
+        break;
+        case "Orange":
+        text = "#FFA500";
+        break;
+        case "Black":
+        text = "#000000";
+        break;        
+        default:
+        text = "Please select the listed four colors only (case sensitive)!";
+    }
+    document.getElementById("hex").innerHTML = text;
+}
+
+function updatedisp(){
+  first = document.getElementById("FN").value;
+  last = document.getElementById("LN").value;
+  document.getElementById("update").innerHTML = first + " "+ last;
+}
+
+function changefun(val){
+  updatedval = val;
+  document.getElementById("update").innerHTML = updatedval;
+}
+</script>
+</body>
+</html>
