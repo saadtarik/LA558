@@ -1,0 +1,175 @@
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2017 by saadtarik (http://jsbin.com/tezijil/2/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+
+<head>
+  <title>Assignment 5</title>
+<style id="jsbin-css">
+body {
+	background-color: lightgrey;
+	font-family: serif;
+}
+
+a {
+	text-decoration: none;
+	color: red;
+}
+
+h1 {
+  margin:0;
+  color: white;
+}
+
+h2,h3 {
+	margin: 0;
+  color: #524727
+}
+
+#container {
+	background-color: white;
+	width: 800px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+#header {
+	background-color: #C8102E;
+	color: white;
+	text-align: center;
+	padding: 10px;
+}
+#content {
+	padding: 10px;
+}
+#colbox {
+	width: 100px;
+	height: 100px;
+	float:left;
+	border: thin solid #000000;
+	background-color: #DFFF00;
+}
+
+
+#nav.selected {
+	font-weight: bold;
+}
+
+#main {
+	width: 750px;
+	float: right;
+}
+
+#footer {
+	clear: both;
+	padding: 10px;
+	background-color: #9B945F;
+	color: white;
+	text-align: right;
+}
+</style>
+</head> 
+
+<body>
+
+<div id = "container">
+
+  <div id = "header">
+    <h1>Assignment 5 by Saad Tarik</h1>
+  </div>
+  <div id = "content">
+
+    <div id = "main">
+      <h2> Radio Button </h2>
+      Select a day of the week: <br>
+      <input type = "radio" id = "day1" name = "day" value = "Monday"> Monday </input><br>
+    <input type = "radio" id = "day2" name = "day" value = "Tuesday"> Tuesday </input><br>
+  <input type = "radio" id = "day3" name = "day" value = "Wednesday"> Wednesday </input><br>
+  <input type = "radio" id = "day4" name = "day" value = "Thursday"> Thursday </input><br>
+  <input type = "radio" id = "day5" name = "day" value = "Friday"> Friday </input><br>
+<input type = "radio" id = "day6" name = "day" value = "Saturday"> Saturday </input><br>
+<input type = "radio" id = "day7" name = "day" value = "Sunday"> Sunday </input><br>
+Display the selected day:
+<button type="button" onclick="dispday()">Display</button><br>
+      
+      <h2> Check Boxes </h2>
+      What languages do you know?<br>
+        <input type="checkbox" name="lang" value="English"> English <br>
+        <input type="checkbox" name="lang" value="Spanish"> Spanish <br>
+        <input type="checkbox" name="lang" value="French"> French <br>
+        <input type="checkbox" name="lang" value="Italian"> Italian <br>
+        <input type="checkbox" name="lang" value="Portugese"> Portugese <br><br>
+        <button type="button" name="Submitbutton"
+onclick="checkboxes()">Submit</button> 
+
+      
+      <br>
+      <h2> Text Input Box </h2>
+      Text Box 1: <br>
+      <input type = "text" id = "txt1" placeholder = "Enter text here"> <br>
+      Text Box 2: <br>
+      <input type = "text" id = "txt2" placeholder = "Enter text here"> <br> <br>
+      <button type="button" name="Submitbutton"
+onclick="textbox()">Submit</button><br>
+      <br>
+      <h2> Embed a Map </h2>
+<br>
+      <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d1523342.5824536278!2d-91.75821786379674!3d41.779211659958214!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e6!4m5!1s0x87ee70624634a06b%3A0x273156083cc75200!2sAmes%2C+IA!3m2!1d42.0307812!2d-93.63191309999999!4m5!1s0x880e2c3cd0f4cbed%3A0xafe0a6ad09c0c000!2sChicago%2C+IL!3m2!1d41.8781136!2d-87.6297982!5e0!3m2!1sen!2sus!4v1486527547854" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+      
+
+      
+ 
+    </div>
+  
+  </div>
+  <div id = "footer">
+    Saad Tarik | CRP 558 | Assignment 5
+  </div>
+
+
+<script id="jsbin-javascript">
+  function dispday(){
+    var wkday = document.getElementsByName("day");
+    var outday;
+    for(var i = 0; i < wkday.length; i++){
+      //console.log("Array Length: " + wkday.length + ", Day: " + wkday[i].value);
+      if(wkday[i].checked){
+        outday = wkday[i].value;
+        //console.log(wkday[i].value);
+        alert("You selected: " + outday)
+      } 
+    }
+  }
+
+
+function checkboxes(){
+  var itemlist = document.getElementsByName("lang");
+  var checkitems = [];
+  var j = 0;
+  for (var i = 0; i < itemlist.length; i++) {
+    if (itemlist[i].checked){
+      //console.log(itemlist[i].value)
+      checkitems[j] = itemlist[i].value;
+      j = j+1;
+    }
+  }
+  //console.log(checkitems.length);
+  //console.log(checkitems);
+  alert("Selected languages: " + checkitems);
+}
+
+function textbox(){
+  var text1 = document.getElementById("txt1").value;
+  var text2 = document.getElementById("txt2").value;
+  console.log(text1);
+  alert("Your Text: " + text1 + " " + text2)
+}
+</script>
+</body>
+</html>
