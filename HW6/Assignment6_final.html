@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2017 by saadtarik (http://jsbin.com/mopitay/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+<script src="https://code.jquery.com/jquery-3.1.0.js">
+</script>  
+<style id="jsbin-css">
+body {
+	background-color: lightgrey;
+	font-family: serif;
+}
+
+a {
+	text-decoration: none;
+	color: red;
+}
+
+h1 {
+  margin:0;
+  color: white;
+}
+
+h2,h3 {
+	margin: 0;
+  color: #524727
+}
+
+h4 {
+  margin: 0;
+  color: lightgrey;
+}
+
+#container {
+	background-color: white;
+	width: 800px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+#header {
+	background-color: #C8102E;
+	color: white;
+	text-align: center;
+	padding: 10px;
+}
+#content {
+	padding: 10px;
+}
+#colbox {
+	width: 100px;
+	height: 100px;
+	float:left;
+	border: thin solid #000000;
+	background-color: #DFFF00;
+}
+
+
+#nav.selected {
+	font-weight: bold;
+}
+
+#main {
+	width: 750px;
+	float: right;
+}
+
+#footer {
+	clear: both;
+	padding: 10px;
+	background-color: #9B945F;
+	color: white;
+	text-align: right;
+}
+</style>
+</head>
+  
+<script>
+  $(document).ready(function(){
+    $("button").click(function(){
+      $("p").hide();
+    });
+    
+    $(".t1").click(function(){
+      $("#hl").css("background", "yellow");
+    });
+    
+    $(".t2").click(function(){
+      $("#ex3").fadeToggle(300).delay(300).fadeToggle(300);
+    })
+
+    $(".t3").click(function(){
+      $("#ex4").css({opacity:'0.5'});
+    })
+    
+  });
+</script>  
+  
+<body>
+
+<div id = "container">
+
+  <div id = "header">
+    <h1>Assignment 6: jQuery Playground</h1> <br>
+    <h4> Saad Tarik </h4>
+  </div>
+  <div id = "content">
+
+    <div id = "main">
+      <h2> Example 1 </h2>
+      <p>Clicking the button will hide this paragraph! </p>
+      <button> Hide </button> <br>
+       <br>
+      <h2> Example 2 </h2>
+      <div id = "hl" class = "t1"> Clicking this line will highlight the text. </div> <br>
+      
+      <h2> Example 3 </h2>
+      <div id = "ex3" class = "t2">  Click this line to fade and reappear. </div> <br>
+      
+      <h2> Example 4 </h2>
+      <div id = "ex4" class = "t3">  Click this line to change the opacity to 50%. </div> <br>
+  
+  </div>
+  <div id = "footer">
+    Saad Tarik | CRP 558 | Assignment 6
+  </div>
+  
+  
+</body>
+</html>
