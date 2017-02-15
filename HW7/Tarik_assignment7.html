@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2017 by saadtarik (http://jsbin.com/piruvon/2/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>jQuery Redux</title>
+<script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+</script>  
+<style id="jsbin-css">
+body {
+	background-color: lightgrey;
+	font-family: serif;
+}
+
+a {
+	text-decoration: none;
+	color: red;
+}
+
+h1 {
+  margin:0;
+  color: white;
+}
+
+h2,h3 {
+	margin: 0;
+  color: #524727
+}
+
+h4 {
+  margin: 0;
+  color: lightgrey;
+}
+
+#container {
+	background-color: none;
+	width: 800px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+#menu {
+  position: absolute;
+  left: 20px;
+  padding: 5px;
+  top: 180px;
+  width: 150px;
+  height: 200px;
+  background-color: #CAC7A7;
+  padding-left: 5px;
+  font-size: small;
+  float: left;
+}
+
+#header {
+	background-color: #C8102E;
+	color: white;
+	text-align: center;
+	padding: 10px;
+}
+#content {
+	padding: 10px;
+}
+#colbox {
+	width: 100px;
+	height: 100px;
+	float:left;
+	border: thin solid #000000;
+	background-color: #DFFF00;
+}
+
+
+#nav.selected {
+	font-weight: bold;
+}
+
+#main {
+	width: 750px;
+	float: right;
+}
+
+#footer {
+	clear: both;
+	padding: 10px;
+	background-color: #9B945F;
+	color: white;
+	text-align: right;
+}
+
+img {
+  position: absolute;
+  left: 500px;
+  top: 200px;
+  z-index: -1;
+  display: none;
+}
+</style>
+</head>
+  
+<body>
+
+
+
+  <div id = "header">
+    <h1>Assignment 7: jQuery Assignment 3 Redux</h1> <br>
+    <h4> Saad Tarik </h4>
+  </div>
+  <div id = "container">
+  <div id = "content">
+
+    <div id = "main">
+      <div id = "menu"> 
+        <h3 style="text-align: left"> Basemap Layers </h3><br>
+        <input type="radio" name="basemap" value="0" checked> Topography <br>
+        <input type="radio" name="basemap" value="1"> Land Cover <br>
+        <input type="radio" name="basemap" value="2"> Street
+        <hr>
+        <h3 style="text-align: left"> Add Layers </h3><br> 
+            <input type="checkbox" class="mapLayer" value="3"> Museums
+    <br>
+    <input type="checkbox" class="mapLayer" value="4"> Zipcodes
+    <br>
+    <input type="checkbox" class="mapLayer" value="5"> Iowa Border
+    <br>
+  </div> 
+  
+  <div id="maps">
+  <img id="map0" src="https://saadtarik.github.io/LA558/HW3/images/basemapTopo.png"> 
+  <img id="map1" src="https://saadtarik.github.io/LA558/HW3/images/basemapLandcover.png">   
+  <img id="map2" src="https://saadtarik.github.io/LA558/HW3/images/basemapStreets.png">
+  <img id="map3" src="https://saadtarik.github.io/LA558/HW3/images/museums.png"> 
+  <img id="map4" src="https://saadtarik.github.io/LA558/HW3/images/Zipcode.png">
+  <img id="map5" src="https://saadtarik.github.io/LA558/HW3/images/iowaBorder.png">
+  </div>
+  </div> 
+    <br>
+  </div>
+
+  
+  
+<script id="jsbin-javascript">
+//console.clear();
+
+$(function() {
+
+  var totalMaps = 6; //enter this manually
+
+  //initially hide all maps
+  for (i = 0; i < totalMaps; i++) {
+    $("#map" + i).hide();
+  }
+
+  //show the base map
+  $("#map0").show();
+
+  //toggle basemap layers
+  $('input:radio[name=basemap]').click(function() {
+    base = $('input:radio[name=basemap]:checked').val();
+    $("#map0, #map1, #map2").hide(); //combined selectors in one line
+    $("#map" + base).show();
+  });
+
+  
+  $(".mapLayer").change(function() {
+    x = $(this).val();
+    console.log("toggled map" + x);
+    $("#map" + x).toggle();
+  });
+
+})
+
+</script>
+</body>
+</html>
