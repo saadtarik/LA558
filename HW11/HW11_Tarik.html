@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2017 by saadtarik (http://jsbin.com/cunota/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>JS Bin</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+
+    <script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+  <style id="jsbin-css">
+body {
+	background-color: lightgrey;
+	font-family: serif;
+}
+
+a {
+	text-decoration: none;
+	color: red;
+}
+
+h1 {
+  margin:0;
+  color: white;
+}
+
+h2,h3 {
+	margin: 0;
+  color: #524727
+}
+
+h4 {
+  margin: 0;
+  color: lightgrey;
+}
+
+#container {
+	background-color: white;
+	width: 1000px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+#header {
+	background-color: #C8102E;
+	color: white;
+	text-align: center;
+	padding: 10px;
+}
+#content {
+	padding: 10px;
+}
+#colbox {
+	width: 100px;
+	height: 100px;
+	float:left;
+	border: thin solid #000000;
+	background-color: #DFFF00;
+}
+
+
+#nav.selected {
+	font-weight: bold;
+}
+
+#main {
+	width: 800px;
+	float: right;
+}
+
+#footer {
+	clear: both;
+	padding: 10px;
+	background-color: #9B945F;
+	color: white;
+	text-align: right;
+}
+
+#map {
+     width: 600px;
+     height: 400px;
+     /* background-color: red; */
+}
+
+.leaflet-div-icon{
+  background-color: yellow;
+  text-align: center;
+}  
+  
+</style>
+</head>
+
+
+  <body>
+
+    <div id="container">
+
+      <div id="header">
+        <h1>Assignment 11: Leaflet - Managing Basemaps </h1>
+        <br>
+        <h4> Saad Tarik </h4>
+      </div>
+      <div id="content">
+
+        <div id="main">
+          <h2> Description</h2>
+          <br>
+          
+          <div id='map'></div>
+          <br>
+
+
+        </div>
+        <div id="footer">
+          Saad Tarik | CRP 558 | Assignment 11
+        </div>
+
+
+  <script id="jsbin-javascript">
+// Basemaps
+
+var Esri_NatGeoWorldMap = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
+	maxZoom: 16
+});
+
+var Esri_WorldStreetMap = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
+});
+
+var OSM_bw = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+	maxZoom: 18,
+	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+});
+
+var map = L.map('map', {
+  center: [54.129419, -2.287585],
+  zoom: 5,
+  layers: [Esri_NatGeoWorldMap, Esri_WorldStreetMap]
+});
+
+var polylines = L.polyline([
+  [52.195169, 0.132828],
+  [51.731094, -1.260656],
+  [52.966828, -1.101651],
+  [52.627829, 1.298177]
+], {color: 'red'}).addTo(map);
+
+
+var baseMaps = {
+  "ESRI NatGeo": Esri_NatGeoWorldMap,
+	"ESRI StreetMap": Esri_WorldStreetMap,
+  "OpenStreetMap (B&W)": OSM_bw,
+};
+
+
+var clubs = new L.LayerGroup();
+
+	L.marker([53.462922, -2.291303]).bindPopup('Manchester United').addTo(clubs),
+  L.marker([53.430765,-2.961087]).bindPopup('Liverpool').addTo(clubs),
+  L.marker([51.554675,-0.108438]).bindPopup('Arsenal').addTo(clubs),
+  L.marker([51.481483,-0.190871]).bindPopup('Chelsea').addTo(clubs),
+  L.marker([51.422145,-0.982745]).bindPopup('Reading').addTo(clubs), 
+  L.marker([54.975359, -1.621560]).bindPopup('Newcastle United').addTo(clubs), 
+	L.marker([53.483022, -2.200376]).bindPopup('Manchester City').addTo(clubs);
+
+var overlays = {
+  "EPL Clubs": clubs
+}
+
+L.control.layers(baseMaps, overlays).addTo(map);
+</script>
+</body>
+
+</html>
