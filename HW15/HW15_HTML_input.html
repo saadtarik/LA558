@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Tarik - HW 15</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+
+    <script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+  </head>
+  
+	<script src="https://indicator.extension.iastate.edu/classes/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js"></script>
+    <script src="https://saadtarik.github.io/Resources/Data/StoryCountyZips.json" type="text/javascript"></script>
+  
+    <script src="https://saadtarik.github.io/Resources/Data/airports_IA.js"></script>
+  
+  <script src="https://saadtarik.github.io/Resources/Data/feautresStoryCounty.geojson"></script>
+  
+  <script src="https://saadtarik.github.io/Resources/Icons/leaflet.pattern.js"></script>
+  
+  <script src="https://saadtarik.github.io/Resources/Icons/leaflet.awesome-markers.js"></script>
+  
+   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+	
+	<link rel="stylesheet" href="http://129.186.142.145/indicators/classes/leaflet-awesome-markers/dist/leaflet.awesome-markers.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">	
+	<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
+  
+
+
+  <body>
+
+    <div id="container">
+
+      <div id="header">
+        <h1>Assignment 15: Leaflet data filtering and awesome-markers over a pattern styled thematic map </h1>
+        <br>
+        <h4> Saad Tarik </h4>
+      </div>
+      <div id="content">
+
+        <div id="main">
+          
+          <div id="map"></div>
+          <br>
+              <div class="btn-group">
+        <button type="button" id="allFeatures" class="btn btn-success">All Itmes </button>
+        <button type="button" id="airport" class="btn btn-success">Airports</button>
+        <button type="button" id="park" class="btn btn-success">Parks</button>
+		<button type="button" id="lake" class="btn btn-success">Lakes</button>
+    </div> <br><br>
+
+        </div>
+        <div id="footer">
+          Saad Tarik | CRP 558 | Assignment 14
+        </div>
+        
+      </div>
+      
+     </div>
+
+
+  </body>
+
+</html>
