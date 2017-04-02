@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2017 by saadtarik (http://jsbin.com/yobuzib/2/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Tarik - Mini Project(v2)</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css" />
+
+    <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
+
+    <script src="https://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
+
+    <script src="https://leaflet.github.io/Leaflet.markercluster/example/realworld.10000.js"></script>
+    <script	 src="https://leaflet.github.io/Leaflet.heat/dist/leaflet-heat.js">
+    </script>
+    
+    <script src="https://indicator.extension.iastate.edu/classes/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js"></script>
+    
+    <script src="https://saadtarik.github.io/LA558/Data/IA_DOT_County_Traffic_Crash_POINT_Var.geojson"></script>
+  <style id="jsbin-css">
+body {
+	background-color: lightgrey;
+	font-family: serif;
+}
+
+a {
+	text-decoration: none;
+	color: red;
+}
+
+h1 {
+  margin:0;
+  color: white;
+}
+
+h2,h3 {
+	margin: 0;
+  color: #524727
+}
+
+h4 {
+  margin: 0;
+  color: lightgrey;
+}
+
+#container {
+	background-color: white;
+	width: 1000px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+#header {
+	background-color: #C8102E;
+	color: white;
+	text-align: center;
+	padding: 10px;
+}
+#content {
+	padding: 20px;
+}
+#colbox {
+	width: 100px;
+	height: 100px;
+	float:left;
+	border: thin solid #000000;
+	background-color: #DFFF00;
+}
+
+#nav.selected {
+	font-weight: bold;
+}
+
+#main {
+	width: 800px;
+	float: left;
+  margin-left: 100px;
+}
+
+#footer {
+	clear: both;
+	padding: 10px;
+	background-color: #9B945F;
+	color: white;
+	text-align: right;
+}
+
+#map {
+     width: 800px;
+     height: 400px;
+     /* background-color: red; */
+}
+
+.leaflet-div-icon{
+  background-color: yellow;
+  text-align: center;
+}  
+
+.legend {
+    line-height: 10px;
+    color: #555;
+}
+.legend i {
+    width: 18px;
+    height: 20px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.9;
+}
+
+.info {
+    padding: 6px 8px;
+    font: 10px/20px Arial, Helvetica, sans-serif;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+
+.info h4 {
+    margin: 0 0 5px;
+    color: #777;
+}
+
+#slider-range {
+    width:90%;
+}
+</style>
+</head>
+
+
+  <body>
+
+    <div id="container">
+
+      <div id="header">
+        <h1>Mini Project (V2) </h1>
+        <br>
+        <h4> Saad Tarik </h4>
+      </div>
+      <div id="content">
+
+        <div id="main">
+          <b>Iowa traffic crash data (County Level)</b><br>
+          This data contains traffic crash history by county including number of crashes and fatalities from 2001.
+          <br>
+          <br> 
+          <div id="slider-range"></div>
+          <br>
+
+          <div id="map"></div>
+          <br>
+          <br>
+          <select id="counties">
+              <option id="mt">Select County</option>
+              <option id="story">Story</option>
+              <option id="polk">Polk</option>
+          </select>
+<br><br>
+
+
+        </div>
+        <div id="footer">
+          Saad Tarik | CRP 558 | Mini Project
+        </div>
+        
+      </div>
+      
+     </div>
+
+
+  <script id="jsbin-javascript">
+console.clear();
+
+var OSM_bw = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+  maxZoom: 18,
+  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+});
+
+var Esri_WorldStreetMap = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+  attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
+});
+
+var map = L.map('map').setView([42.067577, -93.478181],7);L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+  maxZoom: 18,
+  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map); //[44.39, -84.11]
+
+var baseMaps = {
+  "ESRI StreetMap": Esri_WorldStreetMap,
+  "OpenStreetMap (B&W)": OSM_bw,
+};
+
+map.doubleClickZoom.enable();
+
+
+//myURL = 'http://public-iowadot.opendata.arcgis.com/datasets/64963f5081604065baae82329312832a_8.geojson';
+//IA_DOT_County_Traffic_Crash_Statistics_SICL.geojson
+myURL = "https://saadtarik.github.io/LA558/Data/IA_DOT_County_Traffic_Crash_POINT.geojson";
+var geojsonMarkerOptions = {
+  color: "#000",
+  weight: 0, 
+  opacity: 0,
+  fillOpacity: 0.5
+};
+
+function getColorCrashes(d) {
+  return d <= '200' ? 'blue' :
+         d <= '800' ? 'green' :
+         d <= '2500' ? 'lightgreen' :
+         d <= '4000' ? 'yellow' :
+         d <= '6000' ? 'orange' :
+         'red'
+       //  "#FFFFFF"; //white
+}
+
+function getColorFatality(d) {
+  return d <= '3' ? 'blue' :
+         d <= '8' ? 'green' :
+         d <= '15' ? 'lightgreen' :
+         d <= '22' ? 'yellow' :
+         d <= '32' ? 'orange' :
+         'red'
+       //  "#FFFFFF"; //white
+}
+
+var geojsonLayerCrashes = new L.GeoJSON.AJAX(myURL, {
+  pointToLayer: function(feature, latlng) {
+    return new L.CircleMarker(latlng, geojsonMarkerOptions);
+  },
+  style: function(feature){
+    return {
+      radius: (feature.properties.ALLCRASH / 1500) + 3,
+      fillColor: getColorCrashes(feature.properties.ALLCRASH)
+    };
+  },
+  onEachFeature: function(feature, layer) {
+    popupText = "County: " + feature.properties.COUNTYNAME + "<br># of Crashes: " + feature.properties.ALLCRASH;
+    layer.bindPopup(popupText).openPopup();
+  }
+}).addTo(map);
+
+var geojsonLayerFatality = new L.GeoJSON.AJAX(myURL, {
+  pointToLayer: function(feature, latlng) {
+    return new L.CircleMarker(latlng, geojsonMarkerOptions);
+  },
+  style: function(feature){
+    return {
+      radius: (feature.properties.TFATALITY / 3) + 0,
+      fillColor: getColorFatality(feature.properties.TFATALITY)
+    };
+  },
+  onEachFeature: function(feature, layer) {
+    popupText = "County: " + feature.properties.COUNTYNAME + "<br># of Fatalities: " + feature.properties.TFATALITY;
+    layer.bindPopup(popupText).openPopup();
+  }
+}).addTo(map);
+
+
+
+//create legend
+var legendC = L.control({
+  position: 'bottomleft'
+	//Possible values are 'topleft', 'topright', 'bottomleft' or 'bottomright'
+});
+
+legendC.onAdd = function(map) {
+
+  var div = L.DomUtil.create('div', 'info legend'),
+    sizeCat = [200,800,2500,4000,6000,7000],
+    labels = ['<200','200-800','800-2500', '2500-4000','4000-6000', '>6000'];
+
+	
+	//console.log(feature.length);
+	
+	 div.innerHTML += "<b>No. of Crashes</b><br>";
+  // loop through items and generate a label with a colored square for each
+  for (var i = 0; i < sizeCat.length; i++) {
+    div.innerHTML +=
+      '<i style="background:' + getColorCrashes(sizeCat[i] ) + ' "></i> ' +' '+ labels[i]+'<br>';
+  }
+  return div;
+};
+legendC.addTo(map);
+
+var legendF = L.control({
+  position: 'bottomleft'
+	//Possible values are 'topleft', 'topright', 'bottomleft' or 'bottomright'
+});
+
+legendF.onAdd = function(map) {
+
+  var div = L.DomUtil.create('div', 'info legend'),
+    sizeCat = [3,8,15,22,32,35],
+    labels = ['<3','3-8','8-15', '15-22','22-32', '>32'];
+
+	
+	//console.log(feature.length);
+	
+	 div.innerHTML += "<b>No. of Fatalities</b><br>";
+  // loop through items and generate a label with a colored square for each
+  for (var i = 0; i < sizeCat.length; i++) {
+    div.innerHTML +=
+      '<i style="background:' + getColorFatality(sizeCat[i] ) + ' "></i> ' +' '+ labels[i]+'<br>';
+  }
+  return div;
+};
+legendF.addTo(map);
+
+$("#counties").change(function() {
+  var value = $(this).val();
+  if(value == 'Story'){
+    map.setView([42.02, -93.45], 12)
+  }
+  if(value == 'Polk'){
+    map.setView([41.69, -93.58], 12)
+  }  
+});
+
+var overlays = {
+  "Crashes": geojsonLayerCrashes,
+  "Fatalities": geojsonLayerFatality
+};
+
+L.control.layers(baseMaps, overlays).addTo(map);
+</script>
+</body>
+
+</html>
