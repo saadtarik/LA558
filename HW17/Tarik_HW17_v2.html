@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2017 by saadtarik (http://jsbin.com/huhovej/3/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Tarik - HW 17</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" /> 
+	  
+<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+	
+<script src="https://code.jquery.com/jquery-2.2.4.js"></script>        
+  <style id="jsbin-css">
+body {
+	background-color: lightgrey;
+	font-family: serif;
+}
+
+a {
+	text-decoration: none;
+	color: red;
+}
+
+h1 {
+  margin:0;
+  color: white;
+}
+
+h2,h3 {
+	margin: 0;
+  color: #524727
+}
+
+h4 {
+  margin: 0;
+  color: lightgrey;
+}
+
+#container {
+	background-color: white;
+	width: 1000px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+#header {
+	background-color: #C8102E;
+	color: white;
+	text-align: center;
+	padding: 10px;
+}
+#content {
+	padding: 20px;
+}
+#colbox {
+	width: 100px;
+	height: 100px;
+	float:left;
+	border: thin solid #000000;
+	background-color: #DFFF00;
+}
+
+#nav.selected {
+	font-weight: bold;
+}
+
+#main {
+	width: 800px;
+	float: left;
+  margin-left: 100px;
+}
+
+#footer {
+	clear: both;
+	padding: 10px;
+	background-color: #9B945F;
+	color: white;
+	text-align: right;
+}
+
+#map {
+     width: 800px;
+     height: 400px;
+     /* background-color: red; */
+}
+
+.leaflet-div-icon{
+  background-color: yellow;
+  text-align: center;
+}  
+
+.legend {
+    line-height: 10px;
+    color: #555;
+}
+.legend i {
+    width: 18px;
+    height: 20px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.9;
+}
+
+.info {
+    padding: 6px 8px;
+    font: 10px/20px Arial, Helvetica, sans-serif;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+
+.info h4 {
+    margin: 0 0 5px;
+    color: #777;
+}
+</style>
+</head>
+
+
+  <body>
+
+    <div id="container">
+
+      <div id="header">
+        <h1>Assignment 17: Geocoded Addresses </h1>
+        <br>
+        <h4> Saad Tarik </h4>
+      </div>
+      <div id="content">
+
+        <div id="main">
+          <br>
+          Enter Address: <input type="text" id="myAddress">
+          <br><button type="button" id='geocode'>Show on map</button>
+	  <br><br>
+          <br>
+          
+          <div id="map"></div>
+          <br>
+
+
+        </div>
+        <div id="footer">
+          Saad Tarik | CRP 558 | Assignment 17
+        </div>
+        
+      </div>
+      
+     </div>
+
+
+  <script id="jsbin-javascript">
+$(document).ready(function() {
+  console.clear();
+
+var map = L.map('map').setView([43, -93], 12);
+
+// add an OpenStreetMap tile layer
+L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom: 18
+}).addTo(map);
+
+
+//uncomment for testing
+//$('#myAddress').val('1307 Florida Ave., Ames, IA, 50014');
+console.log($('#myAddress').val());
+
+$('#geocode').click(function () {
+    myAddress = encodeURI($('#myAddress').val());
+    //now take this address and send it to your geocoder of choice
+
+    //var geocodingAPI_URL = "http://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address="+myAddress+"&benchmark=9&format=json";
+
+
+    var geocodingAPI_URL = "http://maps.googleapis.com/maps/api/geocode/json?address=" + myAddress + "&sensor=true";
+
+    console.log(geocodingAPI_URL);
+
+    //Start Geocoding
+    $.getJSON(geocodingAPI_URL, function (json) {
+        //console.log(json.results[0].address_components);
+        //console.log(json.status);
+        var address = json.results[0].formatted_address;
+        var lat = json.results[0].geometry.location.lat;
+        var long = json.results[0].geometry.location.lng;
+        console.log(address);
+        console.log(lat);
+        console.log(long);
+        var county = '';
+        var township = '';
+        $.each(json.results[0].address_components, function (i, jsonData) {
+            level = jsonData.types[0];
+            if ('administrative_area_level_2' === level.toLowerCase()) {
+                county = (jsonData.short_name);
+            }
+            if ('administrative_area_level_3' === level.toLowerCase()) {
+              township = (jsonData.short_name);
+            }
+        });
+        console.log("I am in " + county + "!");
+
+
+        //now add the marker to the map
+        var marker = L.marker([lat, long], {
+            draggable: false,
+            title: address,
+            opacity: 0.75
+        }).addTo(map);
+        text = "County: " + county + "<br> Lat: " + lat + ", Lon: " + long + "<br> Township: " + township;
+        marker.bindPopup(text).openPopup();
+		
+		map.setView([lat, long]);
+
+
+    });
+}); //end geocode click function
+})
+</script>
+</body>
+
+</html>
