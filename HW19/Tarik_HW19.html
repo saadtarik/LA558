@@ -183,7 +183,7 @@ function getLocation() {
 
 function showPosition(position) {
   $("#location").html("Lat: " + position.coords.latitude + "<br> Lon: " + position.coords.longitude),
-    map.setView(new L.LatLng(position.coords.latitude, position.coords.longitude), 17);
+    map.setView(new L.LatLng(position.coords.latitude, position.coords.longitude), 12);
     var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
     marker.bindPopup("<b>Lat: </b>" + position.coords.latitude +
         "<br><b>Lon: </b>" + position.coords.longitude).openPopup();
