@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width" name="viewport">
+    <title>Tarik - HW 21
+    </title>
+    <!--External Data-->
+    <script src="https://indicator.extension.iastate.edu/z_cjs/teachingGIS/webGIS_17/studentFeaturesDB.php?userID=starik&theFunction=responseVar">
+    </script>
+    <!--External CSS-->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://saadtarik.github.io/Resources/Icons/leaflet.awesome-markers.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" rel="stylesheet">
+    <!--External JS-->
+    <script src="https://code.jquery.com/jquery-2.2.4.js">
+    </script>
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js">
+    </script>
+    <script src="https://saadtarik.github.io/Resources/Icons/leaflet.awesome-markers.js">
+    </script>
+    <script src="https://indicator.extension.iastate.edu/classes/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js">
+    </script>
+
+</head>
+
+<body>
+    <div id="container">
+        <div id="header">
+            <h1>Assignment 22: Turf and Proj4JS Playground
+            </h1>
+            <br>
+            <h4>Saad Tarik
+            </h4>
+        </div>
+        <div id="content">
+            <div id="main">
+              <h3> Turf.js (<tt>distanceToRadians</tt>) </h3>
+              This command converts any measurement of distance to radian angles. It takes a numeric input argument and a string indicating the input units (degrees, radians, miles, kilometers, inches, or yards).
+              <br><br>
+              <h3> Turf.js (<tt>squareGrid</tt>) </h3>
+              This command creates a squre grid from a bounding box. The input arguments are the extents of the <tt>box</tt>, <tt>bbox</tt> (max and min lat and lon), <tt>cellSize </tt>(width of each cell), <tt>units</tt> (<tt>cellSize</tt> units in degrees, radians, miles, or kilometers), and <tt>completelyWithin</tt> (boolean argument either True or False which adjusts width and height <tt>cellSize</tt> to fit in the bounding box).
+              <br><br>
+              <h3> Turf.js (<tt>bearing</tt>) </h3>
+              This command takes two points and caluculates the bearing between them. The input arguments are staring and ending points with a boolean argument whether the final brearing is true of false. This command can be useful for navigation purposes (airplanes and ships).<br><br>
+              <h3> Turf.js (<tt>random</tt>) </h3>
+              This command is helpful for testing purposes. It creates random GeoJSON data (both points and polygons). The input arguments are a string either <tt>'point'</tt> or <tt>'polygon'</tt>, <tt>count</tt> (number of data to be generated), and <tt>options</tt> (relates to the features). <br><br>
+              
+              <h3>Proj4js (<tt>proj4.def</tt>)</h3>
+              Allows user to define and georeference a projection as a string. This command can be called using the name and projection and using an array of projections.
+                <div id="map">
+
+                </div>
+                <br>
+            </div>
+            <div id="footer">
+                Saad Tarik | CRP 558 | Assignment 22
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
