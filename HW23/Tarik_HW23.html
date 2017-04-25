@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2017 by saadtarik (http://jsbin.com/zobiyis/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width" name="viewport">
+    <title>Tarik - HW 23
+    </title>
+    <!--External Data-->
+    <script src="https://indicator.extension.iastate.edu/z_cjs/teachingGIS/webGIS_17/studentFeaturesDB.php?userID=starik&theFunction=responseVar">
+    </script>
+    <!--External CSS-->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://saadtarik.github.io/Resources/Icons/leaflet.awesome-markers.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" rel="stylesheet">
+    <!--External JS-->
+    <script src="https://code.jquery.com/jquery-2.2.4.js">
+    </script>
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js">
+    </script>
+    <script src="https://saadtarik.github.io/Resources/Icons/leaflet.awesome-markers.js">
+    </script>
+    <script src="https://indicator.extension.iastate.edu/classes/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js">
+    </script>
+
+<style id="jsbin-css">
+body {
+	background-color: lightgrey;
+	font-family: serif;
+}
+
+a {
+	text-decoration: none;
+	color: cadetblue;
+}
+
+h1 {
+  margin:0;
+  color: white;
+}
+
+h2,h3 {
+	margin: 0;
+  color: #524727
+}
+
+h4 {
+  margin: 0;
+  color: lightgrey;
+}
+
+#container {
+	background-color: white;
+	width: 1000px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+#header {
+	background-color: #C8102E;
+	color: white;
+	text-align: center;
+	padding: 10px;
+}
+#content {
+	padding: 20px;
+}
+#colbox {
+	width: 100px;
+	height: 100px;
+	float:left;
+	border: thin solid #000000;
+	background-color: #DFFF00;
+}
+
+#nav.selected {
+	font-weight: bold;
+}
+
+#main {
+	width: 800px;
+	float: left;
+  margin-left: 100px;
+}
+
+#footer {
+	clear: both;
+	padding: 10px;
+	background-color: #9B945F;
+	color: white;
+	text-align: right;
+}
+
+#map {
+     width: 800px;
+     height: 400px;
+     /* background-color: red; */
+}
+
+.leaflet-div-icon{
+  background-color: yellow;
+  text-align: center;
+}  
+
+.legend {
+    line-height: 10px;
+    color: #555;
+}
+.legend i {
+    width: 18px;
+    height: 20px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.9;
+}
+
+.info {
+    padding: 6px 8px;
+    font: 10px/20px Arial, Helvetica, sans-serif;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+
+.info h4 {
+    margin: 0 0 5px;
+    color: #777;
+}
+</style>
+</head>
+
+<body>
+    <div id="container">
+        <div id="header">
+            <h1>Assignment 23: Incorporating non-georeferenced raster maps into MapBox
+            </h1>
+            <br>
+            <h4>Saad Tarik
+            </h4>
+        </div>
+        <div id="content">
+            <div id="main">
+                <h3> Proposed MTA Purple Line </h3>
+                <br>
+
+                <div id="map">
+
+                </div>
+                <br> Map Source: <a href="http://www.purplelinemd.com/en/about-the-project/project-overview">MTA Purple Line</a><br><br>
+            </div>
+            <div id="footer">
+                Saad Tarik | CRP 558 | Assignment 23
+            </div>
+        </div>
+    </div>
+<script id="jsbin-javascript">
+console.clear();
+
+$(document).ready(function() {
+    var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 18
+    });
+    var purpleline = L.tileLayer('http://mapwarper.net/maps/tile/20245/{z}/{x}/{y}.png', {
+        attribution: 'Open Street Map',
+        maxZoom: 18
+    });
+    var map = L.map('map', {
+        center: new L.LatLng(38.97, -76.97),
+        zoom: 11,
+        layers: [osm, purpleline]
+    });
+
+    // Layer control
+    var basemap = {
+        "Open Street Map": osm
+    };
+
+    var overlay = {
+        "MTA Purple Line": purpleline
+    };
+
+    L.control.layers(basemap, overlay).addTo(map);
+
+})
+</script>
+</body>
+
+</html>
