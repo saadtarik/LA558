@@ -1,0 +1,102 @@
+body {
+	background-color: lightgrey;
+	font-family: serif;
+}
+
+a {
+	text-decoration: none;
+	color: cadetblue;
+}
+
+h1 {
+  margin:0;
+  color: white;
+}
+
+h2,h3 {
+	margin: 0;
+  color: #524727
+}
+
+h4 {
+  margin: 0;
+  color: lightgrey;
+}
+
+#container {
+	background-color: white;
+	width: 1000px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+#header {
+	background-color: #C8102E;
+	color: white;
+	text-align: center;
+	padding: 10px;
+}
+#content {
+	padding: 20px;
+}
+#colbox {
+	width: 100px;
+	height: 100px;
+	float:left;
+	border: thin solid #000000;
+	background-color: #DFFF00;
+}
+
+#nav.selected {
+	font-weight: bold;
+}
+
+#main {
+	width: 800px;
+	float: left;
+  margin-left: 100px;
+}
+
+#footer {
+	clear: both;
+	padding: 10px;
+	background-color: #9B945F;
+	color: white;
+	text-align: right;
+}
+
+#map {
+     width: 800px;
+     height: 600px;
+     /* background-color: red; */
+}
+
+.leaflet-div-icon{
+  background-color: yellow;
+  text-align: center;
+}  
+
+.legend {
+    line-height: 10px;
+    color: #555;
+}
+.legend i {
+    width: 18px;
+    height: 20px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.9;
+}
+
+.info {
+    padding: 6px 8px;
+    font: 10px/20px Arial, Helvetica, sans-serif;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+
+.info h4 {
+    margin: 0 0 5px;
+    color: #777;
+}
