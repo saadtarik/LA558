@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2017 by saadtarik (http://jsbin.com/bizahap/5/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width" name="viewport">
+    <title>Tarik - Course Gallery
+    </title>
+  
+    <!--External CSS-->
+    
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!--External JS-->
+    <script src="https://code.jquery.com/jquery-2.2.4.js">
+    </script>
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js">
+    </script>
+
+    </script>
+    
+   
+  <style id="jsbin-css">
+body {
+	background-color: lightgrey;
+	font-family: serif;
+}
+
+a {
+	text-decoration: none;
+	color: red;
+}
+
+h1 {
+  margin:0;
+  color: white;
+}
+
+h2,h3 {
+	margin: 0;
+  color: #524727
+}
+
+h4 {
+  margin: 0;
+  color: lightgrey;
+}
+
+#container {
+	background-color: white;
+	width: 1800px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+#header {
+	background-color: #C8102E;
+	color: white;
+	text-align: center;
+	padding: 10px;
+}
+#content {
+	padding: 20px;
+}
+#colbox {
+	width: 100px;
+	height: 100px;
+	float:left;
+	border: thin solid #000000;
+	background-color: #DFFF00;
+}
+
+#nav.selected {
+	font-weight: bold;
+}
+
+#main {
+	width: 1600px;
+	float: left;
+  margin-left: 100px;
+}
+
+#footer {
+	clear: both;
+	padding: 10px;
+	background-color: #9B945F;
+	color: white;
+	text-align: right;
+}
+
+#map {
+     width: 800px;
+     height: 400px;
+     /* background-color: red; */
+}
+
+.leaflet-div-icon{
+  background-color: yellow;
+  text-align: center;
+}  
+
+.legend {
+    line-height: 10px;
+    color: #555;
+}
+.legend i {
+    width: 18px;
+    height: 20px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.9;
+}
+
+.info {
+    padding: 6px 8px;
+    font: 10px/20px Arial, Helvetica, sans-serif;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+
+.info h4 {
+    margin: 0 0 5px;
+    color: #777;
+}
+</style>
+</head>
+  <body>
+    <div id="container">
+      <div id="header">
+        <h1>Course Gallery
+        </h1>
+        <br>
+        <h4>Saad Tarik
+        </h4>
+      </div>
+      <div id="content">
+        <div id="main">
+          <br>
+          <h3>Web Mapping</h3> <br><br>
+          
+          <!-- Start Rows -->
+          
+          <!-- Row 1 -->
+          <div class="row">
+            <div class="col-md-3 portfolio-item">
+              <a href="https://saadtarik.github.io/LA558/HW1/HW1_Tarik_About_Me.html">
+                <img class="hwImage" src="https://saadtarik.github.io/LA558/Course_Gallery/HW1.jpeg" width="300" height="150">
+              </a> <p>Assignment 1</p>
+            </div>
+            <div class="col-md-3 portfolio-item">
+              <a href="https://saadtarik.github.io/LA558/HW2/basemap.html">
+                <img class="hwImage" src="https://saadtarik.github.io/LA558/Course_Gallery/HW2.jpeg" width="300" height="150">
+              </a> <p>Assignment 2</p>
+            </div>      
+            <div class="col-md-3 portfolio-item">
+              <a href="https://saadtarik.github.io/LA558/HW3/index.html">
+                <img class="hwImage" src="https://saadtarik.github.io/LA558/Course_Gallery/HW3.jpeg" width="300" height="150">
+              </a> <p>Assignment 3</p>
+            </div>    
+            <div class="v">
+              <a href="https://saadtarik.github.io/LA558/HW4/HW4.html">
+                <img class="hwImage" src="https://saadtarik.github.io/LA558/Course_Gallery/HW4.jpeg" width="300" height="150">
+              </a> <p>Assignment 4</p>
+            </div>             
+          </div>
+          <br><br>
+          <!-- Row 2 -->
+          <div class="row">
+            <div class="col-md-3 portfolio-item">
+              <a href="https://saadtarik.github.io/LA558/HW5/Assignment_5.html">
+                <img class="hwImage" src="https://saadtarik.github.io/LA558/Course_Gallery/HW5.jpeg" width="300" height="150">
+              </a> <p>Assignment 5</p>
+            </div>
+            <div class="col-md-3 portfolio-item">
+              <a href="https://saadtarik.github.io/LA558/HW6/Assignment6_final.html">
+                <img class="hwImage" src="https://saadtarik.github.io/LA558/Course_Gallery/HW6.jpeg" width="300" height="150">
+              </a> <p>Assignment 6</p>
+            </div>      
+            <div class="col-md-3 portfolio-item">
+              <a href="https://saadtarik.github.io/LA558/HW7/Tarik_assignment7.html">
+                <img class="hwImage" src="https://saadtarik.github.io/LA558/Course_Gallery/HW7.jpeg" width="300" height="150">
+              </a> <p>Assignment 7</p>
+            </div>    
+            <div class="v">
+              <a href="https://saadtarik.github.io/LA558/HW8/Tarik_Assignment8.html">
+                <img class="hwImage" src="https://saadtarik.github.io/LA558/Course_Gallery/HW8.jpeg" width="300" height="150">
+              </a> <p>Assignment 8</p>
+            </div>             
+          </div> 
+          <br><br>
+          <!-- Row 3 -->
+          <div class="row">
+            <div class="col-md-3 portfolio-item">
+              <a href="https://saadtarik.github.io/LA558/HW9/HW9_Tarik.html">
+                <img class="hwImage" src="https://saadtarik.github.io/LA558/Course_Gallery/HW9.jpeg" width="300" height="150">
+              </a> <p>Assignment 9</p>
+            </div>
+            <div class="col-md-3 portfolio-item">
+              <a href="https://saadtarik.github.io/LA558/HW10/HW10_Tarik.html">
+                <img class="hwImage" src="https://saadtarik.github.io/LA558/Course_Gallery/HW10.jpeg" width="300" height="150">
+              </a> <p>Assignment 10</p>
+            </div>      
+            <div class="col-md-3 portfolio-item">
+              <a href="https://saadtarik.github.io/LA558/HW11/HW11_Tarik.html">
+                <img class="hwImage" src="https://saadtarik.github.io/LA558/Course_Gallery/HW11.jpeg" width="300" height="150">
+              </a> <p>Assignment 11</p>
+            </div>    
+            <div class="col-md-3 portfolio-item">
+              <a href="https://saadtarik.github.io/LA558/HW12/HW12_Tarik.html">
+                <img class="hwImage" src="https://saadtarik.github.io/LA558/Course_Gallery/HW12.jpeg" width="300" height="150">
+              </a> <p>Assignment 12</p>
+            </div>       
+          </div> 
+           <br><br>         
+          <!-- Row 4 -->
+          <div class="row">
+            <div class="col-md-3 portfolio-item">
+              <a href="https://saadtarik.github.io/LA558/HW13/Tarik_HW13.html">
+                <img class="hwImage" src="https://saadtarik.github.io/LA558/Course_Gallery/HW13.jpeg" width="300" height="150">
+              </a> <p>Assignment 13</p>
+            </div>
+            <div class="col-md-3 portfolio-item">
+              <a href="https://saadtarik.github.io/LA558/HW14/Tarik_HW14.html">
+                <img class="hwImage" src="https://saadtarik.github.io/LA558/Course_Gallery/HW14.jpeg" width="300" height="150">
+              </a> <p>Assignment 14</p>
+            </div>
+            <div class="col-md-3 portfolio-item">
+              <a href="https://saadtarik.github.io/LA558/HW15/Tarik_HW15.html">
+                <img class="hwImage" src="https://saadtarik.github.io/LA558/Course_Gallery/HW15.jpeg" width="300" height="150">
+              </a> <p>Assignment 15</p>
+            </div>
+            <div class="col-md-3 portfolio-item">
+              <a href="https://saadtarik.github.io/LA558/HW16/Tarik_HW16.html">
+                <img class="hwImage" src="https://saadtarik.github.io/LA558/Course_Gallery/HW16.jpeg" width="300" height="150">
+              </a> <p>Assignment 16</p>
+            </div>
+          </div>
+            <br><br>          
+           <!-- Row 5 -->
+          <div class="row">
+            <div class="col-md-3 portfolio-item">
+              <a href="https://saadtarik.github.io/LA558/HW17/Tarik_HW17.html">
+                <img class="hwImage" src="https://saadtarik.github.io/LA558/Course_Gallery/HW17.jpeg" width="300" height="150">
+              </a> <p>Assignment 17</p>
+            </div>
+            <div class="col-md-3 portfolio-item">
+              <a href="https://saadtarik.github.io/LA558/HW18/Tarik_HW18.html">
+                <img class="hwImage" src="https://saadtarik.github.io/LA558/Course_Gallery/HW18.jpeg" width="300" height="150">
+              </a> <p>Assignment 18</p>
+            </div>
+            <div class="col-md-3 portfolio-item">
+              <a href="https://saadtarik.github.io/LA558/HW19/Tarik_HW19.html">
+                <img class="hwImage" src="https://saadtarik.github.io/LA558/Course_Gallery/HW19.jpeg" width="300" height="150">
+              </a> <p>Assignment 19</p>
+            </div>
+            <div class="col-md-3 portfolio-item">
+              <a href="https://saadtarik.github.io/LA558/HW20/Tarik_HW20.html">
+                <img class="hwImage" src="https://saadtarik.github.io/LA558/Course_Gallery/HW20.jpeg" width="300" height="150">
+              </a> <p>Assignment 20</p>            
+            </div>            
+          </div>
+          <br><br>          
+           <!-- Row 6 -->
+          <div class="row">
+            <div class="col-md-3 portfolio-item">
+              <a href="https://saadtarik.github.io/LA558/HW21/Tarik_HW21.html">
+                <img class="hwImage" src="https://saadtarik.github.io/LA558/Course_Gallery/HW21.jpeg" width="300" height="150">
+              </a> <p>Assignment 21</p>            
+            </div>
+            <div class="col-md-3 portfolio-item">
+              <a href="https://saadtarik.github.io/LA558/HW22/Tarik_HW22.html">
+                <img class="hwImage" src="https://saadtarik.github.io/LA558/Course_Gallery/HW22.jpeg" width="300" height="150">
+              </a> <p>Assignment 22</p>            
+            </div>
+            <div class="col-md-3 portfolio-item">
+              <a href="https://saadtarik.github.io/LA558/HW23/Tarik_HW23.html">
+                <img class="hwImage" src="https://saadtarik.github.io/LA558/Course_Gallery/HW23.jpeg" width="300" height="150">
+              </a> <p>Assignment 23</p>            
+            </div>
+            <div class="col-md-3 portfolio-item">
+              <a href="https://saadtarik.github.io/LA558/HW24/Tarik_HW24.html">
+                <img class="hwImage" src="https://saadtarik.github.io/LA558/Course_Gallery/HW24.jpeg" width="300" height="150">
+              </a> <p>Assignment 24</p>            
+            </div>
+          </div>
+          
+          <div id="map">
+          </div>
+          <br>
+        </div>
+        <div id="footer">
+          Saad Tarik | CRP 558 | Course Gallery
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
