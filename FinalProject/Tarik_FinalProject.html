@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2017 by saadtarik (http://jsbin.com/dupaxo/8/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Tarik - Final Project</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
+    <script src="https://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.markercluster/example/realworld.10000.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.heat/dist/leaflet-heat.js"></script>
+    <script src="https://indicator.extension.iastate.edu/classes/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js"></script>
+    <script src="https://saadtarik.github.io/LA558/Data/IA_DOT_County_Traffic_Crash_POINT_Var.geojson"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<style id="jsbin-css">
+body {
+	background-color: lightgrey;
+	font-family: serif;
+}
+
+a {
+	text-decoration: none;
+	color: red;
+}
+
+h1 {
+  margin:0;
+  color: white;
+}
+
+h2,h3 {
+	margin: 0;
+  color: #524727
+}
+
+h4 {
+  margin: 0;
+  color: lightgrey;
+}
+
+#container {
+	background-color: white;
+	width: 1000px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+#header {
+	background-color: #C8102E;
+	color: white;
+	text-align: center;
+	padding: 10px;
+}
+#content {
+	padding: 20px;
+}
+#colbox {
+	width: 100px;
+	height: 100px;
+	float:left;
+	border: thin solid #000000;
+	background-color: #DFFF00;
+}
+
+#nav.selected {
+	font-weight: bold;
+}
+
+#main {
+	width: 800px;
+	float: left;
+  margin-left: 100px;
+}
+
+#footer {
+	clear: both;
+	padding: 10px;
+	background-color: #9B945F;
+	color: white;
+	text-align: right;
+}
+
+#map {
+     width: 770px;
+     height: 400px;
+     /* background-color: red; */
+}
+
+#map2 {
+     width: 770px;
+     height: 400px;
+     /* background-color: red; */
+}
+
+.leaflet-div-icon{
+  background-color: yellow;
+  text-align: center;
+}  
+
+.legend {
+    line-height: 10px;
+    color: #555;
+}
+.legend i {
+    width: 18px;
+    height: 20px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.9;
+}
+
+.info {
+    padding: 6px 8px;
+    font: 10px/20px Arial, Helvetica, sans-serif;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+
+.info h4 {
+    margin: 0 0 5px;
+    color: #777;
+}
+
+#slider-range {
+    width:90%;
+}
+</style>
+</head>
+
+<body>
+    <div id="container">
+        <div id="header">
+            <h1>Final Project</h1>
+            <br>
+            <h4> Saad Tarik </h4>
+        </div>
+        <div id="content">
+            <div id="main">
+                <b>Iowa traffic crash data (County Level)</b>
+                <br> This data contains traffic crash history by county including number of crashes, fatalities, and damages from 2011 to 2013.
+                <br>
+                <br>
+              <div class="col-sm-14">
+                <div class="panel panel-info">
+                  <div class="panel-heading">
+                    Yearly Crash Data from 2011 to 2013
+                  </div>
+                  <div class="panel-body">
+                   <div id="map"></div>                    
+                  </div>
+                </div>
+              </div>
+              
+              Project Document: <a href="https://saadtarik.github.io/LA558/FinalProject/Tarik_FinalProject.pdf">Click Here</a> 
+              <br><br>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                Crash Data (Numbers)
+                            </div>
+                            <div class="panel-body">
+                                <button type="button" id="y13cr" class="btn btn-success"> 2013</button>
+                                <button type="button" id="y12cr" class="btn btn-success"> 2012</button>
+                                <button type="button" id="y11cr" class="btn btn-success"> 2011</button>
+                                <button type="button" id="clrcr" class="btn btn-success"> Clear All</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                Property Damage (USD)
+                            </div>
+                            <div class="panel-body">
+                                <button type="button" id="y13pd" class="btn btn-success"> 2013</button>
+                                <button type="button" id="y12pd" class="btn btn-success"> 2012</button>
+                                <button type="button" id="y11pd" class="btn btn-success"> 2011</button>
+                                <button type="button" id="clrpd" class="btn btn-success"> Clear All</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>              
+            <br>
+
+              
+                    <div class="col-sm-14">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                Types of Crashes in 2013
+                            </div>
+                            <div class="panel-body">
+                                <button type="button" id="alcdrug" class="btn btn-success"> Alcohol and Drug </button>
+                                <button type="button" id="nbus" class="btn btn-success"> Normal Bus </button>
+                                <button type="button" id="sbus" class="btn btn-success"> School Bus </button>
+                                <button type="button" id="ped" class="btn btn-success"> Pedestrian </button>
+                                <button type="button" id="trk" class="btn btn-success"> Truck </button>
+                                <button type="button" id="moto" class="btn btn-success"> Motorcycle </button>
+                                <button type="button" id="clrcrtype" class="btn btn-success"> Clear All </button>
+                            </div>
+                        </div>
+                    </div>              
+        </div>
+        <div id="footer">
+            Saad Tarik | CRP 558 | Class Project
+        </div>
+    </div>
+    </div>
+<script id="jsbin-javascript">
+console.clear();
+var OSM_bw = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+	maxZoom: 18,
+	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+});
+var Esri_WorldStreetMap = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
+});
+var map = L.map('map').setView([42.06, -91.20], 6);
+
+L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+	maxZoom: 18,
+	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map); //[44.39, -84.11]
+
+var baseMaps = {
+	"ESRI StreetMap": Esri_WorldStreetMap,
+	"OpenStreetMap (B&W)": OSM_bw,
+};
+map.doubleClickZoom.enable();
+//myURL = 'http://public-iowadot.opendata.arcgis.com/datasets/64963f5081604065baae82329312832a_8.geojson';
+//IA_DOT_County_Traffic_Crash_Statistics_SICL.geojson
+//myURL = "https://saadtarik.github.io/LA558/Data/IA_DOT_County_Traffic_Crash_POINT.geojson";
+myURL = "https://saadtarik.github.io/LA558/Data/IA_County_CrashData_20112013.geojson";
+// control that shows state info on hover
+var info = L.control();
+info.onAdd = function(map) {
+	this._div = L.DomUtil.create('div', 'info');
+	this.update();
+	return this._div;
+};
+info.update = function(props) {
+	this._div.innerHTML = '<h3>Total Crashes</h3>' + (props ? '<b>' + feature.properties.NAME + '</b><br />' + feature.properties.ALLCRASH13 + ' people / mi<sup>2</sup>' : 'Hover over a county');
+};
+//info.addTo(map);
+var geojsonMarkerOptions = {
+	color: "#000",
+	weight: 0,
+	opacity: 0,
+	fillOpacity: 0.5
+};
+
+function getColorCrashes(d) {
+	return d <= '100' ? 'blue' : d <= '300' ? 'green' : d <= '700' ? 'lightgreen' : d <= '1500' ? 'yellow' : d <= '2500' ? 'orange' : 'red'
+		//  "#FFFFFF"; //white
+}
+
+function getColorPropDmg(d) {
+	return d <= '200000' ? 'blue' : d <= '800000' ? 'green' : d <= '1300000' ? 'lightgreen' : d <= '2000000' ? 'yellow' : d <= '3000000' ? 'orange' : 'red'
+		//  "#FFFFFF"; //white
+}
+
+function styleCrashes13(feature) {
+	return {
+		fillColor: getColorCrashes(feature.properties.ALLCRASH13),
+		weight: 2,
+		opacity: 1,
+		color: 'black',
+		fillOpacity: 0.6
+	};
+}
+
+function styleCrashes12(feature) {
+	return {
+		fillColor: getColorCrashes(feature.properties.ALLCRASH12),
+		weight: 2,
+		opacity: 1,
+		color: 'black',
+		fillOpacity: 0.6
+	};
+}
+
+function styleCrashes11(feature) {
+	return {
+		fillColor: getColorCrashes(feature.properties.ALLCRASH11),
+		weight: 2,
+		opacity: 1,
+		color: 'black',
+		fillOpacity: 0.6
+	};
+}
+
+function stylePropDmg13(feature) {
+	return {
+		fillColor: getColorPropDmg(feature.properties.TPROPDMG13),
+		weight: 2,
+		opacity: 1,
+		color: 'black',
+		fillOpacity: 0.6
+	};
+}
+
+function stylePropDmg12(feature) {
+	return {
+		fillColor: getColorPropDmg(feature.properties.TPROPDMG12),
+		weight: 2,
+		opacity: 1,
+		color: 'black',
+		fillOpacity: 0.6
+	};
+}
+
+function stylePropDmg11(feature) {
+	return {
+		fillColor: getColorPropDmg(feature.properties.TPROPDMG11),
+		weight: 2,
+		opacity: 1,
+		color: 'black',
+		fillOpacity: 0.6
+	};
+}
+
+var allCrash13 = new L.GeoJSON.AJAX(myURL, {
+	style: styleCrashes13,
+	onEachFeature: function(feature, layer) {
+		text1 = "<strong> " + feature.properties.NAME + "</strong><br>";
+		text2 = "Total Crashes: " + feature.properties.ALLCRASH13 + "<br>";
+		text3 = "Fatality: " + feature.properties.TFATALITY1 + "<br>";
+		text = text1 + text2 + text3;
+		layer.bindTooltip(text);
+	}
+})
+var allCrash12 = new L.GeoJSON.AJAX(myURL, {
+	style: styleCrashes12,
+	onEachFeature: function(feature, layer) {
+		text1 = "<strong> " + feature.properties.NAME + "</strong><br>";
+		text2 = "Total Crashes: " + feature.properties.ALLCRASH12 + "<br>";
+		text3 = "Fatality: " + feature.properties.TFATALIT_1 + "<br>";
+		text = text1 + text2 + text3;
+		layer.bindTooltip(text);
+	}
+})
+var allCrash11 = new L.GeoJSON.AJAX(myURL, {
+	style: styleCrashes11,
+	onEachFeature: function(feature, layer) {
+		text1 = "<strong> " + feature.properties.NAME + "</strong><br>";
+		text2 = "Total Crashes: " + feature.properties.ALLCRASH11 + "<br>";
+		text3 = "Fatality: " + feature.properties.TFATALITY1 + "<br>";
+		text = text1 + text2 + text3;
+		layer.bindTooltip(text);
+	}
+})
+var legendCrash = L.control({
+	position: 'bottomright'
+});
+legendCrash.onAdd = function(map) {
+	var div = L.DomUtil.create('div', 'info legend'),
+		grades = [0, 100, 300, 700, 1500, 2500],
+		labels = [],
+		from, to;
+	for (var i = 0; i < grades.length; i++) {
+		from = grades[i];
+		to = grades[i + 1];
+		labels.push('<i style="background:' + getColorCrashes(from + 1) + '"></i> ' + from + (to ? '&ndash;' + to : '+'));
+	}
+	div.innerHTML = labels.join('<br>');
+	return div;
+};
+
+var allPropDmg13 = new L.GeoJSON.AJAX(myURL, {
+	style: stylePropDmg13,
+	onEachFeature: function(feature, layer) {
+		text1 = "<strong> " + feature.properties.NAME + "</strong><br>";
+		text2 = "Total Damage (USD): " + feature.properties.TPROPDMG13 + "<br>";
+		text = text1 + text2;
+		layer.bindTooltip(text);
+	}
+})
+var allPropDmg12 = new L.GeoJSON.AJAX(myURL, {
+	style: stylePropDmg12,
+	onEachFeature: function(feature, layer) {
+		text1 = "<strong> " + feature.properties.NAME + "</strong><br>";
+		text2 = "Total Damage (USD): " + feature.properties.TPROPDMG12 + "<br>";
+		text = text1 + text2;
+		layer.bindTooltip(text);
+	}
+})
+var allPropDmg11 = new L.GeoJSON.AJAX(myURL, {
+	style: stylePropDmg11,
+	onEachFeature: function(feature, layer) {
+		text1 = "<strong> " + feature.properties.NAME + "</strong><br>";
+		text2 = "Total Damage (USD): " + feature.properties.TPROPDMG11 + "<br>";
+		text = text1 + text2;
+		layer.bindTooltip(text);
+	}
+})
+var legendPropDmg = L.control({
+	position: 'bottomright'
+});
+legendPropDmg.onAdd = function(map) {
+	var div = L.DomUtil.create('div', 'info legend'),
+		grades2 = [0, 200000, 800000, 1300000, 2000000, 3000000],
+		labels2 = [],
+		from, to;
+	for (var i = 0; i < grades2.length; i++) {
+		from = grades2[i];
+		to = grades2[i + 1];
+		labels2.push('<i style="background:' + getColorPropDmg(from + 1) + '"></i> ' + from + (to ? '&ndash;' + to : '+'));
+	}
+	div.innerHTML = labels2.join('<br>');
+	return div;
+};
+
+$("#y13cr").click(function() {
+	map.addLayer(allCrash13);
+	map.removeLayer(allCrash12);
+	map.removeLayer(allCrash11);
+	map.removeLayer(allPropDmg13);  
+	map.removeLayer(allPropDmg12);
+	map.removeLayer(allPropDmg11);
+  map.addControl(legendCrash);
+  map.removeControl(legendPropDmg);
+  map.removeControl(legendCrashType);
+	map.removeLayer(allALCDRUGCR13);
+	map.removeLayer(allNBUSCR13);
+	map.removeLayer(allSBUSCR13);
+	map.removeLayer(allPEDCR13);
+	map.removeLayer(allTRKCR13);
+	map.removeLayer(allMOTOCR13);   
+});
+$("#y12cr").click(function() {
+	map.addLayer(allCrash12);
+	map.removeLayer(allCrash13);
+	map.removeLayer(allCrash11);
+	map.removeLayer(allPropDmg13);  
+	map.removeLayer(allPropDmg12);
+	map.removeLayer(allPropDmg11);
+  map.addControl(legendCrash);
+  map.removeControl(legendPropDmg);
+  map.removeControl(legendCrashType);
+	map.removeLayer(allALCDRUGCR13);
+	map.removeLayer(allNBUSCR13);
+	map.removeLayer(allSBUSCR13);
+	map.removeLayer(allPEDCR13);
+	map.removeLayer(allTRKCR13);
+	map.removeLayer(allMOTOCR13);   
+});
+$("#y11cr").click(function() {
+	map.addLayer(allCrash11);
+	map.removeLayer(allCrash12);
+	map.removeLayer(allCrash13);
+	map.removeLayer(allPropDmg13);  
+	map.removeLayer(allPropDmg12);
+	map.removeLayer(allPropDmg11);
+  map.addControl(legendCrash);
+  map.removeControl(legendPropDmg); 
+  map.removeControl(legendCrashType);
+	map.removeLayer(allALCDRUGCR13);
+	map.removeLayer(allNBUSCR13);
+	map.removeLayer(allSBUSCR13);
+	map.removeLayer(allPEDCR13);
+	map.removeLayer(allTRKCR13);
+	map.removeLayer(allMOTOCR13);   
+});
+$("#clrcr").click(function() {
+	map.removeLayer(allCrash13);
+	map.removeLayer(allCrash12);
+	map.removeLayer(allCrash11);
+	map.removeLayer(allPropDmg13);  
+	map.removeLayer(allPropDmg12);
+	map.removeLayer(allPropDmg11);
+  map.removeControl(legendCrash);
+  map.removeControl(legendPropDmg); 
+  map.removeControl(legendCrashType);
+	map.removeLayer(allALCDRUGCR13);
+	map.removeLayer(allNBUSCR13);
+	map.removeLayer(allSBUSCR13);
+	map.removeLayer(allPEDCR13);
+	map.removeLayer(allTRKCR13);
+	map.removeLayer(allMOTOCR13);   
+});
+
+$("#y13pd").click(function() {
+	map.addLayer(allPropDmg13);
+	map.removeLayer(allPropDmg12);
+	map.removeLayer(allPropDmg11);
+	map.removeLayer(allCrash13);
+	map.removeLayer(allCrash12);
+	map.removeLayer(allCrash11);
+  map.addControl(legendPropDmg);  
+  map.removeControl(legendCrash);
+  map.removeControl(legendCrashType); 
+	map.removeLayer(allALCDRUGCR13);
+	map.removeLayer(allNBUSCR13);
+	map.removeLayer(allSBUSCR13);
+	map.removeLayer(allPEDCR13);
+	map.removeLayer(allTRKCR13);
+	map.removeLayer(allMOTOCR13);   
+});
+$("#y12pd").click(function() {
+	map.addLayer(allPropDmg12);
+	map.removeLayer(allPropDmg13);
+	map.removeLayer(allPropDmg11);
+	map.removeLayer(allCrash13);
+	map.removeLayer(allCrash12);
+	map.removeLayer(allCrash11);  
+  map.addControl(legendPropDmg);  
+  map.removeControl(legendCrash);
+  map.removeControl(legendCrashType);
+	map.removeLayer(allALCDRUGCR13);
+	map.removeLayer(allNBUSCR13);
+	map.removeLayer(allSBUSCR13);
+	map.removeLayer(allPEDCR13);
+	map.removeLayer(allTRKCR13);
+	map.removeLayer(allMOTOCR13);   
+});
+$("#y11pd").click(function() {
+	map.addLayer(allPropDmg11);
+	map.removeLayer(allPropDmg12);
+	map.removeLayer(allPropDmg13);
+	map.removeLayer(allCrash13);
+	map.removeLayer(allCrash12);
+	map.removeLayer(allCrash11);
+  map.addControl(legendPropDmg);  
+  map.removeControl(legendCrash);
+  map.removeControl(legendCrashType);
+	map.removeLayer(allALCDRUGCR13);
+	map.removeLayer(allNBUSCR13);
+	map.removeLayer(allSBUSCR13);
+	map.removeLayer(allPEDCR13);
+	map.removeLayer(allTRKCR13);
+	map.removeLayer(allMOTOCR13);   
+});
+$("#clrpd").click(function() {
+	map.removeLayer(allPropDmg13);
+	map.removeLayer(allPropDmg12);
+	map.removeLayer(allPropDmg11);
+	map.removeLayer(allCrash13);
+	map.removeLayer(allCrash12);
+	map.removeLayer(allCrash11);
+  map.removeControl(legendCrash);
+  map.removeControl(legendPropDmg);
+  map.removeControl(legendCrashType);   
+	map.removeLayer(allALCDRUGCR13);
+	map.removeLayer(allNBUSCR13);
+	map.removeLayer(allSBUSCR13);
+	map.removeLayer(allPEDCR13);
+	map.removeLayer(allTRKCR13);
+	map.removeLayer(allMOTOCR13);  
+});
+
+// map2
+function getColorCrashType(d) {
+	return d <= '4' ? 'blue' : d <= '9' ? 'green' : d <= '13' ? 'lightgreen' : d <= '18' ? 'yellow' : d <= '24' ? 'orange' : 'red'
+		//  "#FFFFFF"; //white
+}
+
+function styleALCDRUGCR(feature) {
+	return {
+		fillColor: getColorCrashType(feature.properties.ALCDRUGCR1),
+		weight: 2,
+		opacity: 1,
+		color: 'black',
+		fillOpacity: 0.6
+	};
+}
+function styleNBUSCR(feature) {
+	return {
+		fillColor: getColorCrashType(feature.properties.NBUSCR13),
+		weight: 2,
+		opacity: 1,
+		color: 'black',
+		fillOpacity: 0.6
+	};
+}
+function styleSBUSCR(feature) {
+	return {
+		fillColor: getColorCrashType(feature.properties.SBUSCR13),
+		weight: 2,
+		opacity: 1,
+		color: 'black',
+		fillOpacity: 0.6
+	};
+}
+function stylePEDCR(feature) {
+	return {
+		fillColor: getColorCrashType(feature.properties.PEDCR13),
+		weight: 2,
+		opacity: 1,
+		color: 'black',
+		fillOpacity: 0.6
+	};
+}
+function styleTRKCR(feature) {
+	return {
+		fillColor: getColorCrashType(feature.properties.TRKCR13),
+		weight: 2,
+		opacity: 1,
+		color: 'black',
+		fillOpacity: 0.6
+	};
+}
+function styleMOTOCR(feature) {
+	return {
+		fillColor: getColorCrashType(feature.properties.MOTOCR13),
+		weight: 2,
+		opacity: 1,
+		color: 'black',
+		fillOpacity: 0.6
+	};
+}
+
+var allALCDRUGCR13 = new L.GeoJSON.AJAX(myURL, {
+	style: styleALCDRUGCR,
+	onEachFeature: function(feature, layer) {
+		text1 = "<strong> " + feature.properties.NAME + "</strong><br>";
+		text2 = "Total Crashes: " + feature.properties.ALCDRUGCR1 + "<br>";
+		text = text1 + text2;
+		layer.bindTooltip(text);
+	}
+})
+
+var allNBUSCR13 = new L.GeoJSON.AJAX(myURL, {
+	style: styleNBUSCR,
+	onEachFeature: function(feature, layer) {
+		text1 = "<strong> " + feature.properties.NAME + "</strong><br>";
+		text2 = "Total Crashes: " + feature.properties.NBUSCR13 + "<br>";
+		text = text1 + text2;
+		layer.bindTooltip(text);
+	}
+})
+
+var allSBUSCR13 = new L.GeoJSON.AJAX(myURL, {
+	style: styleSBUSCR,
+	onEachFeature: function(feature, layer) {
+		text1 = "<strong> " + feature.properties.NAME + "</strong><br>";
+		text2 = "Total Crashes: " + feature.properties.SBUSCR13 + "<br>";
+		text = text1 + text2;
+		layer.bindTooltip(text);
+	}
+})
+
+var allPEDCR13 = new L.GeoJSON.AJAX(myURL, {
+	style: stylePEDCR,
+	onEachFeature: function(feature, layer) {
+		text1 = "<strong> " + feature.properties.NAME + "</strong><br>";
+		text2 = "Total Crashes: " + feature.properties.PEDCR13 + "<br>";
+		text = text1 + text2;
+		layer.bindTooltip(text);
+	}
+})
+
+var allTRKCR13 = new L.GeoJSON.AJAX(myURL, {
+	style: styleTRKCR,
+	onEachFeature: function(feature, layer) {
+		text1 = "<strong> " + feature.properties.NAME + "</strong><br>";
+		text2 = "Total Crashes: " + feature.properties.TRKCR13 + "<br>";
+		text = text1 + text2;
+		layer.bindTooltip(text);
+	}
+})
+
+var allMOTOCR13 = new L.GeoJSON.AJAX(myURL, {
+	style: styleMOTOCR,
+	onEachFeature: function(feature, layer) {
+		text1 = "<strong> " + feature.properties.NAME + "</strong><br>";
+		text2 = "Total Crashes: " + feature.properties.MOTOCR13 + "<br>";
+		text = text1 + text2;
+		layer.bindTooltip(text);
+	}
+})
+
+var legendCrashType = L.control({
+	position: 'bottomright'
+});
+
+legendCrashType.onAdd = function(map2) {
+	var div = L.DomUtil.create('div', 'info legend'),
+		grades = [0, 4, 9, 13, 18, 24],
+		labels = [],
+		from, to;
+	for (var i = 0; i < grades.length; i++) {
+		from = grades[i];
+		to = grades[i + 1];
+		labels.push('<i style="background:' + getColorCrashType(from + 1) + '"></i> ' + from + (to ? '&ndash;' + to : '+'));
+	}
+	div.innerHTML = labels.join('<br>');
+	return div;
+};
+
+$("#alcdrug").click(function() {
+	map.addLayer(allALCDRUGCR13);
+	map.removeLayer(allNBUSCR13);
+	map.removeLayer(allSBUSCR13);
+	map.removeLayer(allPEDCR13);
+	map.removeLayer(allTRKCR13);
+	map.removeLayer(allMOTOCR13);
+	map.removeLayer(allPropDmg13);
+	map.removeLayer(allPropDmg12);
+	map.removeLayer(allPropDmg11);
+	map.removeLayer(allCrash13);
+	map.removeLayer(allCrash12);
+	map.removeLayer(allCrash11);
+  map.removeControl(legendCrash);
+  map.removeControl(legendPropDmg);
+  map.addControl(legendCrashType);    
+});
+$("#nbus").click(function() {
+	map.removeLayer(allALCDRUGCR13);
+	map.addLayer(allNBUSCR13);
+	map.removeLayer(allSBUSCR13);
+	map.removeLayer(allPEDCR13);
+	map.removeLayer(allTRKCR13);
+	map.removeLayer(allMOTOCR13);
+	map.removeLayer(allPropDmg13);
+	map.removeLayer(allPropDmg12);
+	map.removeLayer(allPropDmg11);
+	map.removeLayer(allCrash13);
+	map.removeLayer(allCrash12);
+	map.removeLayer(allCrash11);
+  map.removeControl(legendCrash);
+  map.removeControl(legendPropDmg);
+  map.addControl(legendCrashType);   
+});
+$("#sbus").click(function() {
+	map.removeLayer(allALCDRUGCR13);
+	map.removeLayer(allNBUSCR13);
+	map.addLayer(allSBUSCR13);
+	map.removeLayer(allPEDCR13);
+	map.removeLayer(allTRKCR13);
+	map.removeLayer(allMOTOCR13);
+	map.removeLayer(allPropDmg13);
+	map.removeLayer(allPropDmg12);
+	map.removeLayer(allPropDmg11);
+	map.removeLayer(allCrash13);
+	map.removeLayer(allCrash12);
+	map.removeLayer(allCrash11);
+  map.removeControl(legendCrash);
+  map.removeControl(legendPropDmg);
+  map.addControl(legendCrashType);   
+});
+$("#ped").click(function() {
+	map.removeLayer(allALCDRUGCR13);
+	map.removeLayer(allNBUSCR13);
+	map.removeLayer(allSBUSCR13);
+	map.addLayer(allPEDCR13);
+	map.removeLayer(allTRKCR13);
+	map.removeLayer(allMOTOCR13);
+	map.removeLayer(allPropDmg13);
+	map.removeLayer(allPropDmg12);
+	map.removeLayer(allPropDmg11);
+	map.removeLayer(allCrash13);
+	map.removeLayer(allCrash12);
+	map.removeLayer(allCrash11);
+  map.removeControl(legendCrash);
+  map.removeControl(legendPropDmg);
+  map.addControl(legendCrashType);   
+});
+$("#trk").click(function() {
+	map.removeLayer(allALCDRUGCR13);
+	map.removeLayer(allNBUSCR13);
+	map.removeLayer(allSBUSCR13);
+	map.removeLayer(allPEDCR13);
+	map.addLayer(allTRKCR13);
+	map.removeLayer(allMOTOCR13);
+	map.removeLayer(allPropDmg13);
+	map.removeLayer(allPropDmg12);
+	map.removeLayer(allPropDmg11);
+	map.removeLayer(allCrash13);
+	map.removeLayer(allCrash12);
+	map.removeLayer(allCrash11);
+  map.removeControl(legendCrash);
+  map.removeControl(legendPropDmg);
+  map.addControl(legendCrashType);   
+});
+$("#moto").click(function() {
+	map.removeLayer(allALCDRUGCR13);
+	map.removeLayer(allNBUSCR13);
+	map.removeLayer(allSBUSCR13);
+	map.removeLayer(allPEDCR13);
+	map.removeLayer(allTRKCR13);
+	map.addLayer(allMOTOCR13);
+	map.removeLayer(allPropDmg13);
+	map.removeLayer(allPropDmg12);
+	map.removeLayer(allPropDmg11);
+	map.removeLayer(allCrash13);
+	map.removeLayer(allCrash12);
+	map.removeLayer(allCrash11);
+  map.removeControl(legendCrash);
+  map.removeControl(legendPropDmg);
+  map.addControl(legendCrashType);   
+});
+
+$("#clrcrtype").click(function() {
+	map.removeLayer(allALCDRUGCR13);
+	map.removeLayer(allNBUSCR13);
+	map.removeLayer(allSBUSCR13);
+	map.removeLayer(allPEDCR13);
+	map.removeLayer(allTRKCR13);
+	map.removeLayer(allMOTOCR13);
+	map.removeLayer(allPropDmg13);
+	map.removeLayer(allPropDmg12);
+	map.removeLayer(allPropDmg11);
+	map.removeLayer(allCrash13);
+	map.removeLayer(allCrash12);
+	map.removeLayer(allCrash11);
+  map.removeControl(legendCrash);
+  map.removeControl(legendPropDmg);
+  map.addControl(legendCrashType);   
+});
+
+L.control.layers(baseMaps).addTo(map);
+</script>
+</body>
+
+</html>
