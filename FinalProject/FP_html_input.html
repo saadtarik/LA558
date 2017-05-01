@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Tarik - Final Project</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
+    <script src="https://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.markercluster/example/realworld.10000.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.heat/dist/leaflet-heat.js"></script>
+    <script src="https://indicator.extension.iastate.edu/classes/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js"></script>
+    <script src="https://saadtarik.github.io/LA558/Data/IA_DOT_County_Traffic_Crash_POINT_Var.geojson"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div id="container">
+        <div id="header">
+            <h1>Final Project</h1>
+            <br>
+            <h4> Saad Tarik </h4>
+        </div>
+        <div id="content">
+            <div id="main">
+                <b>Iowa traffic crash data (County Level)</b>
+                <br> This data contains traffic crash history by county including number of crashes, fatalities, and damages from 2011 to 2013.
+                <br>
+                <br>
+              <div class="col-sm-14">
+                <div class="panel panel-info">
+                  <div class="panel-heading">
+                    Yearly Crash Data from 2011 to 2013
+                  </div>
+                  <div class="panel-body">
+                   <div id="map"></div>                    
+                  </div>
+                </div>
+              </div>  
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                Crash Data (Numbers)
+                            </div>
+                            <div class="panel-body">
+                                <button type="button" id="y13cr" class="btn btn-success"> 2013</button>
+                                <button type="button" id="y12cr" class="btn btn-success"> 2012</button>
+                                <button type="button" id="y11cr" class="btn btn-success"> 2011</button>
+                                <button type="button" id="clrcr" class="btn btn-success"> Clear All</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                Property Damage (USD)
+                            </div>
+                            <div class="panel-body">
+                                <button type="button" id="y13pd" class="btn btn-success"> 2013</button>
+                                <button type="button" id="y12pd" class="btn btn-success"> 2012</button>
+                                <button type="button" id="y11pd" class="btn btn-success"> 2011</button>
+                                <button type="button" id="clrpd" class="btn btn-success"> Clear All</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>              
+            <br>
+
+              
+                    <div class="col-sm-14">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                Types of Crashes in 2013
+                            </div>
+                            <div class="panel-body">
+                                <button type="button" id="alcdrug" class="btn btn-success"> Alcohol and Drug </button>
+                                <button type="button" id="nbus" class="btn btn-success"> Normal Bus </button>
+                                <button type="button" id="sbus" class="btn btn-success"> School Bus </button>
+                                <button type="button" id="ped" class="btn btn-success"> Pedestrian </button>
+                                <button type="button" id="trk" class="btn btn-success"> Truck </button>
+                                <button type="button" id="moto" class="btn btn-success"> Motorcycle </button>
+                                <button type="button" id="clrcrtype" class="btn btn-success"> Clear All </button>
+                            </div>
+                        </div>
+                    </div>              
+        </div>
+        <div id="footer">
+            Saad Tarik | CRP 558 | Class Project
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Tarik - Final Project</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css" />
+
+    <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
+
+    <script src="https://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
+
+    <script src="https://leaflet.github.io/Leaflet.markercluster/example/realworld.10000.js"></script>
+    <script	 src="https://leaflet.github.io/Leaflet.heat/dist/leaflet-heat.js">
+    </script>
+    
+    <script src="https://indicator.extension.iastate.edu/classes/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js"></script>
+    
+    <script src="https://saadtarik.github.io/LA558/Data/IA_DOT_County_Traffic_Crash_POINT_Var.geojson"></script>
+    <script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous">
+  </script>
+
+  </head>
+
+
+  <body>
+
+    <div id="container">
+
+      <div id="header">
+        <h1>Final Project</h1>
+        <br>
+        <h4> Saad Tarik </h4>
+      </div>
+      <div id="content">
+
+        <div id="main">
+          <b>Iowa traffic crash data (County Level)</b><br>
+          This data contains traffic crash history by county including number of crashes and fatalities from 2001.
+          <br>
+          <br> 
+          <br>
+          <button type="button" id="y13"> 2013</button> <button type="button" id="y12"> 2012</button> <button type="button" id="y11"> 2011</button>
+          
+          <select id="year">
+              <option id="mt">Select Year</option>
+              <option id="2013">2013</option>
+              <option id="2012">2012</option>
+              <option id="2011">2011</option>
+          </select><br>
+          <br> 
+          <div id="map"></div>
+          <br>
+          <br>
+          
+<br><br>
+
+
+        </div>
+        <div id="footer">
+          Saad Tarik | CRP 558 | Class Project
+        </div>
+        
+      </div>
+      
+     </div>
+
+
+  </body>
+
+</html>
+
+
+######################################################################################
+console.clear();
+
+var OSM_bw = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+  maxZoom: 18,
+  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+});
+
+var Esri_WorldStreetMap = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+  attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
+});
+
+var map = L.map('map').setView([42.067577, -93.478181],6);L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+  maxZoom: 18,
+  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map); //[44.39, -84.11]
+
+var baseMaps = {
+  "ESRI StreetMap": Esri_WorldStreetMap,
+  "OpenStreetMap (B&W)": OSM_bw,
+};
+
+map.doubleClickZoom.enable();
+
+
+//myURL = 'http://public-iowadot.opendata.arcgis.com/datasets/64963f5081604065baae82329312832a_8.geojson';
+//IA_DOT_County_Traffic_Crash_Statistics_SICL.geojson
+//myURL = "https://saadtarik.github.io/LA558/Data/IA_DOT_County_Traffic_Crash_POINT.geojson";
+
+myURL = "https://saadtarik.github.io/LA558/Data/IA_County_CrashData_20112013.geojson";
+// control that shows state info on hover
+var info = L.control();
+
+	info.onAdd = function (map) {
+		this._div = L.DomUtil.create('div', 'info');
+		this.update();
+		return this._div;
+	};
+	info.update = function (props) {
+		this._div.innerHTML = '<h3>Total Crashes</h3>' +  (props ?
+			'<b>' + feature.properties.NAME + '</b><br />' + feature.properties.ALLCRASH13 + ' people / mi<sup>2</sup>'
+			: 'Hover over a county');
+	};
+
+	info.addTo(map);
+
+
+var geojsonMarkerOptions = {
+  color: "#000",
+  weight: 0, 
+  opacity: 0,
+  fillOpacity: 0.5
+};
+
+function getColorCrashes(d) {
+  return d <= '100' ? 'blue' :
+         d <= '300' ? 'green' :
+         d <= '700' ? 'lightgreen' :
+         d <= '1500' ? 'yellow' :
+         d <= '2500' ? 'orange' :
+         'red'
+       //  "#FFFFFF"; //white
+}
+
+function styleCrashes13(feature){
+  return {
+    fillColor: getColorCrashes(feature.properties.ALLCRASH13),
+    weight: 2,
+    opacity: 1,
+    color: 'black',
+    fillOpacity: 0.6
+  };
+}
+
+function styleCrashes12(feature){
+  return {
+    fillColor: getColorCrashes(feature.properties.ALLCRASH12),
+    weight: 2,
+    opacity: 1,
+    color: 'black',
+    fillOpacity: 0.6
+  };
+}
+
+function styleCrashes11(feature){
+  return {
+    fillColor: getColorCrashes(feature.properties.ALLCRASH11),
+    weight: 2,
+    opacity: 1,
+    color: 'black',
+    fillOpacity: 0.6
+  };
+}
+
+	function highlightFeature(e) {
+		var layer = e.target;
+
+		layer.setStyle({
+			weight: 5,
+			color: '#666',
+			dashArray: '',
+			fillOpacity: 0.7
+		});
+
+		if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+			layer.bringToFront();
+		}
+
+		info.update(layer.feature.properties);
+	}
+
+	var geojson;
+
+	function resetHighlight(e) {
+		geojson.resetStyle(e.target);
+		info.update();
+	}
+
+	function zoomToFeature(e) {
+		map.fitBounds(e.target.getBounds());
+	}
+
+	function onEachFeature(feature, layer) {
+		layer.on({
+			mouseover: highlightFeature,
+			mouseout: resetHighlight,
+			click: zoomToFeature
+		});
+	}
+
+var allCrash13 = new L.GeoJSON.AJAX(myURL, {
+  style: styleCrashes13,
+  onEachFeature: function (feature, layer) {
+    text1 = "<strong> " + feature.properties.NAME + "</strong><br>";
+    text2 =  "Total Crashes: " + feature.properties.ALLCRASH13 + "<br>";
+    text3 = "Fatality: " + feature.properties.TFATALITY1 + "<br>";
+    text = text1+text2+text3;
+    layer.bindTooltip(text);
+  }
+}).addTo(map);
+
+
+var allCrash12 = new L.GeoJSON.AJAX(myURL, {
+  style: styleCrashes12,
+  onEachFeature: function (feature, layer) {
+    text1 = "<strong> " + feature.properties.NAME + "</strong><br>";
+    text2 =  "Total Crashes: " + feature.properties.ALLCRASH12 + "<br>";
+    text3 = "Fatality: " + feature.properties.TFATALIT_1 + "<br>";
+    text = text1+text2+text3;
+    layer.bindTooltip(text);
+  }
+}).addTo(map);
+
+var allCrash11 = new L.GeoJSON.AJAX(myURL, {
+  style: styleCrashes11,
+  onEachFeature: function (feature, layer) {
+    text1 = "<strong> " + feature.properties.NAME + "</strong><br>";
+    text2 =  "Total Crashes: " + feature.properties.ALLCRASH11 + "<br>";
+    text3 = "Fatality: " + feature.properties.TFATALITY1 + "<br>";
+    text = text1+text2+text3;
+    layer.bindTooltip(text);
+  }
+}).addTo(map);
+
+	var legendCrash = L.control({position: 'bottomright'});
+
+	legendCrash.onAdd = function (map) {
+
+		var div = L.DomUtil.create('div', 'info legend'),
+			grades = [0, 100, 300, 700, 1500, 2500],
+			labels = [],
+			from, to;
+
+		for (var i = 0; i < grades.length; i++) {
+			from = grades[i];
+			to = grades[i + 1];
+
+			labels.push(
+				'<i style="background:' + getColorCrashes(from + 1) + '"></i> ' +
+				from + (to ? '&ndash;' + to : '+'));
+		}
+
+		div.innerHTML = labels.join('<br>');
+		return div;
+	};
+
+	legendCrash.addTo(map);
+
+$("#y13").click(function(){
+  map.addLayer(allCrash13);
+  map.removeLayer(allCrash12);
+  map.removeLayer(allCrash11);
+});
+
+$("#y12").click(function(){
+  map.addLayer(allCrash12);
+  map.removeLayer(allCrash13);
+  map.removeLayer(allCrash11);
+});
+
+$("#y11").click(function(){
+  map.addLayer(allCrash11);
+  map.removeLayer(allCrash12);
+  map.removeLayer(allCrash13);
+});
+
+L.control.layers(baseMaps).addTo(map);
+
