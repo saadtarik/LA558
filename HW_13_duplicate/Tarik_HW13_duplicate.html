@@ -152,7 +152,7 @@ h4 {
   <script id="jsbin-javascript">
 console.clear()
 
-var OSM_bw = L.tileLayer('https://tile.openstreetmap.org/${z}/${x}/${y}.png', {
+var OSM_bw = L.tileLayer('https://a.tile.openstreetmap.de/${z}/${x}/${y}.png', {
   maxZoom: 18,
   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 });
@@ -161,7 +161,7 @@ var Esri_WorldStreetMap = L.tileLayer('http://server.arcgisonline.com/ArcGIS/res
   attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
 });
 
-var map = L.map('map').setView([44.39, -84.11],5);L.tileLayer('https://tile.openstreetmap.org/${z}/${x}/${y}.png', {
+var map = L.map('map').setView([44.39, -84.11],5);L.tileLayer('https://a.tile.openstreetmap.de/${z}/${x}/${y}.png', {
   maxZoom: 18,
   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
